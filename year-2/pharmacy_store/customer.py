@@ -35,7 +35,8 @@ class Customer(Person):
 
         conn.commit()
 
-    def display_all(self, conn):
+    @classmethod
+    def display_all(cls, conn):
 
         cursor = conn.cursor()
 

@@ -27,22 +27,28 @@ class Employee(Person):
         cursor.execute(
             """
             DELETE FROM employees
-            WHERE email = ?
+            WHERE empEmail = ?
         """,
-            (self.email),
+            (self.email,),
         )
 
         conn.commit()
 
-    def display_all(self, conn):
-
+    @classmethod
+    def display_all(cls, conn):
         cursor = conn.cursor()
 
         cursor.execute("""
-            SELECT * FROM employees
+            SELECT * 
+            FROM employees
         """)
 
         return cursor.fetchall()
+
+    # Bild the Employee object from the tuple returned by the DB (tuple = row)
+    @classmethod
+    def from_row(cls, row):
+        return cls(row[1], row[2], row[3], row[4])
 
 
 # Function to Create a new Employee (basic error handling)

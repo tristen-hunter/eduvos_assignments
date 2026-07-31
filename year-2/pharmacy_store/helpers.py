@@ -60,8 +60,10 @@ def findByEmail(email, conn):
 
     cur.execute(
         """
-        SELECT FROM employees WHERE email = ?
+        SELECT * 
+        FROM employees 
+        WHERE empEmail = ?
     """,
-        (email),
+        (email,),
     )
     return cur.fetchone()

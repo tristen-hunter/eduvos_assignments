@@ -16,6 +16,7 @@ class Person(ABC):
     def delete_person(self, conn) -> None:
         pass
 
+    @classmethod
     @abstractmethod
-    def display_all(self, conn) -> None:
+    def display_all(cls, conn) -> None:
         pass

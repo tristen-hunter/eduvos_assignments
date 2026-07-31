@@ -11,16 +11,16 @@ def main():
     # DB Setup
     conn = sqlite3.connect("pharmacy_database.db")
 
-    print("Welcome To The Pharmacy Store!\nWhat do you want to do today?\n\n")
+    print("Welcome To The Pharmacy Store!\nWhat do you want to do today?")
 
     while True:
-        print("1. Employees\n2. Customers\n3. Products\n4. Sales\n0. Quit\n\n")
+        print("\n\n1. Employees\n2. Customers\n3. Products\n4. Sales\n0. Quit\n\n")
 
         choice = input("Choice: ")
 
         if choice == "1":
             print(
-                "\n1. Add Employee\n2. Delete Employee (by email)\n3. Display all\n0. Return"
+                "\n1. Add Employee\n2. Delete Employee (by email)\n3. Display all\n0. Return\n"
             )
             action = input("Action: ")
 
@@ -29,20 +29,32 @@ def main():
                 newEmployee.insert_person(conn)
 
                 print(f"{newEmployee.name} Added Successfully!")
-                return
+                continue
 
             elif action == "2":
                 email = helpers.getEmail()
-                employeeToBeDeleted = helpers.findByEmail(email, conn)
+                row = helpers.findByEmail(email, conn)
 
-                employeeToBeDeleted.delete_person(conn)
-                print(f"{employeeToBeDeleted.name} Successfully Deleted")
-                return
+                if row is None:
+                    print("Employee Not Found.")
+                else:
+                    employeeTBD = employee.Employee.from_row(row)
+                    employeeTBD.delete_person(conn)
+                    print(f"{employeeTBD.name} Successfully Deleted")
+
+                continue
 
             elif action == "3":
-                pass
+                employees = employee.Employee.display_all(conn)
+
+                print("\nEmployees:")
+                for emp in employees:
+                    print(emp)
+                print("\n")
+                continue
+
             elif action == "0":
-                pass
+                continue
             else:
                 print("Invalid input :(")
                 continue
