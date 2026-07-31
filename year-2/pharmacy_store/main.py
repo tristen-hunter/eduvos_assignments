@@ -34,7 +34,7 @@ def main():
 
             elif action == "2":
                 email = helpers.getEmail()
-                row = helpers.findByEmail(email, conn)
+                row = helpers.find_employee_by_id(email, conn)
 
                 if row is None:
                     print("Employee Not Found.")
@@ -67,17 +67,34 @@ def main():
 
             if action == "1":
                 newCustomer = customer.create_customer()
-                newEmployee.insert_person(conn)
+                newCustomer.insert_person(conn)
 
-                print(f"{newEmployee.name} Added Successfully!")
+                print(f"{newCustomer.name} Added Successfully!")
                 continue
 
             elif action == "2":
-                pass
+                email = helpers.getEmail()
+                row = helpers.find_customer_by_id(email, conn)
+
+                if row is None:
+                    print("Customer Not Found.")
+                else:
+                    customerTBD = customer.Customer.from_row(row)
+                    customerTBD.delete_person(conn)
+                    print(f"{customerTBD.name} Successfully Deleted")
+
+                continue
+
             elif action == "3":
-                pass
+                customers = customer.Customer.display_all(conn)
+
+                print("\nEmployees:")
+                for cust in customers:
+                    print(cust)
+                continue
+
             elif action == "0":
-                pass
+                continue
             else:
                 print("Invalid input :(")
                 continue

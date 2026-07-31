@@ -1,8 +1,6 @@
 from person import Person
 import helpers
 
-# TODO:: Add residentail address
-
 
 class Customer(Person):
     def __init__(
@@ -24,9 +22,9 @@ class Customer(Person):
             INSERT INTO customers (
                 custName,
                 custSurname,
-                empCell,
-                empEmail,
-
+                custCell,
+                custEmail,
+                residentialAddress
             )
             VALUES(?, ?, ?, ?, ?)
         """,
@@ -49,7 +47,7 @@ class Customer(Person):
             DELETE FROM customers
             WHERE custEmail = ?
         """,
-            (self.email),
+            (self.email,),
         )
 
         conn.commit()
@@ -60,10 +58,15 @@ class Customer(Person):
         cursor = conn.cursor()
 
         cursor.execute("""
-            SELECT * FROM customers
+            SELECT * 
+            FROM customers
         """)
 
         return cursor.fetchall()
+
+    @classmethod
+    def from_row(cls, row):
+        return cls(row[1], row[2], row[3], row[4], row[5])
 
 
 def create_customer():
@@ -71,5 +74,6 @@ def create_customer():
     surname = helpers.getSurname()
     cell = helpers.getCell()
     email = helpers.getEmail()
+    residentailAddress = helpers.getResidentialAddress()
 
-    return
+    return Customer(name, surname, cell, email, residentailAddress)

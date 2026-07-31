@@ -55,7 +55,7 @@ def getResidentialAddress():
         print("Address is too short.")
 
 
-def findByEmail(email, conn):
+def find_employee_by_id(email, conn):
     cur = conn.cursor()
 
     cur.execute(
@@ -63,6 +63,20 @@ def findByEmail(email, conn):
         SELECT * 
         FROM employees 
         WHERE empEmail = ?
+    """,
+        (email,),
+    )
+    return cur.fetchone()
+
+
+def find_customer_by_id(email, conn):
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT * 
+        FROM customers 
+        WHERE custEmail = ?
     """,
         (email,),
     )
