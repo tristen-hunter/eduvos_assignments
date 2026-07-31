@@ -55,6 +55,72 @@ def getResidentialAddress():
         print("Address is too short.")
 
 
+def getProductName():
+    while True:
+        name = input("Enter product name: ").strip()
+
+        if len(name) >= 2:
+            return name
+
+        print("Product name must be at least 2 characters long.")
+
+
+def getProductPrice():
+    while True:
+        try:
+            price = float(input("Enter product price: R"))
+
+            if price > 0:
+                return price
+
+            print("Price must be greater than 0.")
+
+        except ValueError:
+            print("Please enter a valid price.")
+
+
+def getProductQuantity():
+    while True:
+        try:
+            quantity = int(input("Enter product quantity: "))
+
+            if quantity >= 0:
+                return quantity
+
+            print("Quantity cannot be negative.")
+
+        except ValueError:
+            print("Please enter a valid whole number.")
+
+
+def getProductID():
+    while True:
+        try:
+            product_id = int(input("Enter product ID: "))
+
+            if product_id > 0:
+                return product_id
+
+            print("Product ID must be greater than 0.")
+
+        except ValueError:
+            print("Please enter a valid product ID.")
+
+
+def getSaleQuantity():
+    while True:
+        try:
+            quantity = int(input("Enter quantity to sell: "))
+
+            if quantity > 0:
+                return quantity
+
+            print("Sale quantity must be greater than 0.")
+
+        except ValueError:
+            print("Please enter a valid whole number.")
+
+
 def find_employee_by_id(email, conn):
     cur = conn.cursor()
 
