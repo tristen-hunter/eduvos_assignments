@@ -1,19 +1,24 @@
+from datetime import date
 import helpers
 
 
 class Product:
     def __init__(self, name, price, quantity, prod_id=None) -> None:
-        self.prod_id = (prod_id,)
-        self.name = (name,)
-        self.price = (price,)
+        self.prod_id = prod_id
+        self.name = name
+        self.price = price
         self.quantity = quantity
+
+        @classmethod
+        def from_row(cls, row):
+            return cls(row[0], row[1], row[2], row[3])
 
 
 class Sale:
     def __init__(self, prod_name, sale_date, sale_total, sale_id=None):
-        self.sale_id = (sale_id,)
-        self.prod_name = (prod_name,)
-        self.sale_date = (sale_date,)
+        self.sale_id = sale_id
+        self.prod_name = prod_name
+        self.sale_date = sale_date
         self.sale_total = sale_total
 
 
@@ -38,10 +43,13 @@ class PharmacyStore:
     def remove_product(self, conn, product_id):
         cursor = conn.cursor()
 
-        cursor.execute("""
+        cursor.execute(
+            """
             DELETE FROM products
-            WHERE prodName = ?
-        """)
+            WHERE prodID = ?
+        """,
+            (product_id),
+        )
 
         conn.commit()
 
@@ -60,11 +68,80 @@ class PharmacyStore:
             (product.name, product.price, product.quantity, product.prod_id),
         )
 
-    def display_products(self, conn): ...
+    def display_products(self, conn):
+        cursor = conn.cursor()
 
-    def sell_product(self, conn, product_id, quantity): ...
+        cursor.execute("""
+            SELECT *
+            FROM products
+        """)
 
-    def display_sales(self, conn): ...
+        return cursor.fetchall()
+
+    def sell_product(self, conn, product_id, quantity):
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            SELECT *
+            FROM products
+            WHERE prodID = ?
+        """,
+            (product_id,),
+        )
+
+        productTuple = cursor.fetchone()
+
+        if productTuple is None:
+            print("Product not found.")
+            return
+
+        product_quantity = productTuple[3]
+
+        new_quantity = int(product_quantity) - int(quantity)
+
+        cursor.execute(
+            """
+            UPDATE products
+            SET 
+                prodQuantity = ?
+            WHERE prodID = ?
+        """,
+            (new_quantity, product_id),
+        )
+
+        existingProduct = Product(
+            prod_id=productTuple[0],
+            name=productTuple[1],
+            price=productTuple[2],
+            quantity=productTuple[3],
+        )
+
+        newSale = create_sale(existingProduct, quantity)
+
+        cursor.execute(
+            """
+            INSERT INTO sales (
+                prodName,
+                saleDate,
+                saleTotal
+            )
+            VAlUES (?, ?, ?)
+        """,
+            (newSale.prod_name, newSale.sale_date, newSale.sale_total),
+        )
+
+        conn.commit()
+
+    def display_sales(self, conn):
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT *
+            FROM sales
+        """)
+
+        return cursor.fetchall()
 
 
 def create_product():
@@ -82,3 +159,11 @@ def create_updated_product():
         price=helpers.getProductPrice(),
         quantity=helpers.getProductQuantity(),
     )
+
+
+def create_sale(product, quan):
+    prodName = product.name
+    saleDate = date.today()
+    saleTotal = int(product.price) * int(quan)
+
+    return Sale(prodName, saleDate, saleTotal)

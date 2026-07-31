@@ -3,6 +3,7 @@ from database import initialize_database
 import employee
 import customer
 import helpers
+import pharmacy
 
 
 def main():
@@ -14,8 +15,10 @@ def main():
 
     print("Welcome To The Pharmacy Store!\nWhat do you want to do today?")
 
+    pharmacy_store = pharmacy.PharmacyStore()
+
     while True:
-        print("\n\n1. Employees\n2. Customers\n3. Products\n4. Sales\n0. Quit\n\n")
+        print("\n\n1. Employees\n2. Customers\n3. Pharmacy\n0. Quit\n\n")
 
         choice = input("Choice: ")
 
@@ -102,25 +105,65 @@ def main():
             pass
         elif choice == "3":
             print(
-                "\n1. Add Product\n2. Remove Product\n3. Update Product\n4. Display All Producrs\n5. Sell Product\n0. Return"
+                "\n1. Add Product\n2. Remove Product\n3. Update Product\n4. Display All Products\n5. Sell Product\n6. Display Sales\n0. Return"
             )
             action = input("Action: ")
 
             if action == "1":
-                pass
+                newProduct = pharmacy.create_product()
+                pharmacy_store.add_product(conn, newProduct)
+
+                print(f"\n{newProduct.name} Added Successfully")
+                continue
+
             elif action == "2":
-                pass
+                productID = input("Product ID (to be deleted): ")
+                pharmacy_store.remove_product(conn, productID)
+
+                print("Product Successfully Deleted!")
+                continue
+
             elif action == "3":
-                pass
+                print("NOTE: Product updated by entering corresponding ID")
+                updatedProduct = pharmacy.create_updated_product()
+                pharmacy_store.update_product(conn, updatedProduct)
+
+                print(f"{updatedProduct.name} Successfully Updated")
+                continue
+
+            elif action == "4":
+                products = pharmacy_store.display_products(conn)
+
+                print("\nAll Products:")
+                for prod in products:
+                    print(prod)
+
+            elif action == "5":
+                prodID = input("Product Sold ID: ")
+                quan = input("Quantity: ")
+
+                pharmacy_store.sell_product(conn, prodID, quan)
+                print("Sale Successfully Recorded!")
+                continue
+            elif action == "6":
+                sales = pharmacy_store.display_sales(conn)
+
+                print("Sales:")
+                for sle in sales:
+                    print(sle)
+                continue
+
             elif action == "0":
-                pass
+                continue
             else:
                 print("Invalid input :(")
                 continue
 
             pass
-        elif choice == "4":
-            pass
+
+        elif choice == "0":
+            print("Thank you for using our Inventory Tracker!\nBye for now")
+            break
         else:
             print("Invalid Input, try again :(")
             continue  # restart loop when invalid input is provided

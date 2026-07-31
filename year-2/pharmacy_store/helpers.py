@@ -65,6 +65,7 @@ def getProductName():
         print("Product name must be at least 2 characters long.")
 
 
+# TODO: fix these refactor to be more simple
 def getProductPrice():
     while True:
         try:
@@ -121,6 +122,7 @@ def getSaleQuantity():
             print("Please enter a valid whole number.")
 
 
+## Functions for fetching from the DB
 def find_employee_by_id(email, conn):
     cur = conn.cursor()
 
