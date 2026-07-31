@@ -13,7 +13,7 @@ class Person(ABC):
         pass
 
     @abstractmethod
-    def delete_person(self, conn) -> None:
+    def delete_person(self, identifier, conn) -> None:
         pass
 
     @abstractmethod

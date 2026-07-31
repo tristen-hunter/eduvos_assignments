@@ -17,7 +17,7 @@ class Customer(Person):
 
         conn.commit()
 
-    def delete_person(self, conn):
+    def delete_person(self, identifier, conn):
         cursor = conn.cursor()
 
         cursor.execute(
@@ -25,7 +25,7 @@ class Customer(Person):
             DELETE FROM customers
             WHERE email = ?
         """,
-            (self.email,),
+            (identifier,),
         )
 
         conn.commit()

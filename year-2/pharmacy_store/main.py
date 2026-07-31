@@ -19,7 +19,7 @@ def main():
 
         if choice == "1":
             print(
-                "\n1. Add Employe\n2. Remove Employee (by email)\n3. Display all\n0. Return"
+                "\n1. Add Employe\n2. Delete Employee (by email)\n3. Display all\n0. Return"
             )
             action = input("Action: ")
 
