@@ -8,7 +8,12 @@ class Employee(Person):
 
         cursor.execute(
             """
-            INSERT INTO employees
+            INSERT INTO employees (
+                empName,
+                empSurname,
+                empCell,
+                empEmail
+            )
             VALUES(?, ?, ?, ?)
         """,
             (self.name, self.surname, self.cell_num, self.email),
@@ -16,7 +21,7 @@ class Employee(Person):
 
         conn.commit()
 
-    def delete_person(self, identifier, conn):
+    def delete_person(self, conn):
         cursor = conn.cursor()
 
         cursor.execute(
@@ -24,7 +29,7 @@ class Employee(Person):
             DELETE FROM employees
             WHERE email = ?
         """,
-            (identifier),
+            (self.email),
         )
 
         conn.commit()
@@ -42,6 +47,9 @@ class Employee(Person):
 
 # Function to Create a new Employee (basic error handling)
 def create_employee():
-    name = 
+    name = helpers.getName()
+    surname = helpers.getSurname()
+    cell = helpers.getCell()
+    email = helpers.getEmail()
 
     return Employee(name, surname, cell, email)

@@ -1,6 +1,7 @@
 import sqlite3
 from database import initialize_database
 import employee
+import helpers
 
 
 def main():
@@ -19,7 +20,7 @@ def main():
 
         if choice == "1":
             print(
-                "\n1. Add Employe\n2. Delete Employee (by email)\n3. Display all\n0. Return"
+                "\n1. Add Employee\n2. Delete Employee (by email)\n3. Display all\n0. Return"
             )
             action = input("Action: ")
 
@@ -31,7 +32,13 @@ def main():
                 return
 
             elif action == "2":
-                pass
+                email = helpers.getEmail()
+                employeeToBeDeleted = helpers.findByEmail(email, conn)
+
+                employeeToBeDeleted.delete_person(conn)
+                print(f"{employeeToBeDeleted.name} Successfully Deleted")
+                return
+
             elif action == "3":
                 pass
             elif action == "0":

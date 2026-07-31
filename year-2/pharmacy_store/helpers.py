@@ -53,3 +53,15 @@ def getResidentialAddress():
             return address
 
         print("Address is too short.")
+
+
+def findByEmail(email, conn):
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT FROM employees WHERE email = ?
+    """,
+        (email),
+    )
+    return cur.fetchone()

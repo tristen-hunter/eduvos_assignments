@@ -9,7 +9,12 @@ class Customer(Person):
 
         cursor.execute(
             """
-            INSERT INTO customers
+            INSERT INTO customers (
+                custName,
+                custSurname,
+                empCell,
+                empEmail
+            )
             VALUES(?, ?, ?, ?)
         """,
             (self.name, self.surname, self.cell_num, self.email),
@@ -17,7 +22,7 @@ class Customer(Person):
 
         conn.commit()
 
-    def delete_person(self, identifier, conn):
+    def delete_person(self, conn):
         cursor = conn.cursor()
 
         cursor.execute(
@@ -25,7 +30,7 @@ class Customer(Person):
             DELETE FROM customers
             WHERE email = ?
         """,
-            (identifier,),
+            (self.email),
         )
 
         conn.commit()
