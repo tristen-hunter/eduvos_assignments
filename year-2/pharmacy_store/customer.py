@@ -1,5 +1,7 @@
 from person import Person
 
+# TODO:: Add residentail address
+
 
 class Customer(Person):
     def insert_person(self, conn):

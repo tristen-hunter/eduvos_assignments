@@ -37,3 +37,40 @@ class Employee(Person):
         """)
 
         return cursor.fetchall()
+
+
+# Function to Create a new Employee (basic error handling)
+def create_employee():
+    while True:
+        name = input("First name: ").strip()
+
+        if name.isalpha():
+            break
+
+        print("Only letters are allowed.")
+
+    while True:
+        surname = input("Surname: ").strip()
+
+        if surname.isalpha():
+            break
+
+        print("Only letters are allowed.")
+
+    while True:
+        cell = input("Cell number: ").strip()
+
+        if len(cell) == 10 and cell.isdigit():
+            break
+
+        print("Cell number must contain exactly 10 digits.")
+
+    while True:
+        email = input("Email: ").strip()
+
+        if "@" in email and "." in email:
+            break
+
+        print("Invalid email address.")
+
+    return Employee(name, surname, cell, email)
