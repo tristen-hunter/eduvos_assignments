@@ -1,6 +1,7 @@
 import sqlite3
 from database import initialize_database
 import employee
+import customer
 import helpers
 
 
@@ -50,7 +51,6 @@ def main():
                 print("\nEmployees:")
                 for emp in employees:
                     print(emp)
-                print("\n")
                 continue
 
             elif action == "0":
@@ -66,7 +66,12 @@ def main():
             action = input("Action: ")
 
             if action == "1":
-                pass
+                newCustomer = customer.create_customer()
+                newEmployee.insert_person(conn)
+
+                print(f"{newEmployee.name} Added Successfully!")
+                continue
+
             elif action == "2":
                 pass
             elif action == "3":
