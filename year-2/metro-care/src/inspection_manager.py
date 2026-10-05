@@ -20,12 +20,12 @@ FIELDNAMES = list(INSPECTION_TEMPLATE.keys())
 
 
 # --- Functions ---
-def create_csv(csv_file, fieldnames):
+def create_csv(csv_dir, fieldnames):
     try:
-        with open(csv_file, "x") as f:
+        with open(csv_dir, "x") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
-        print(f"Created {csv_file} with fieldnames: {fieldnames}")
+        print(f"Created {csv_dir} with fieldnames: {fieldnames}")
     except FileExistsError:
         return
 
@@ -39,6 +39,7 @@ def add_inspection(inspection_template, csv_dir, fieldnames):
         with open(csv_dir, "a", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writerow(new_inspection)
+        print()
         print("New Inspection successfully added")
     except IOError:
         print("Error writing to CSV file")
@@ -50,23 +51,67 @@ def load_inspections(csv_dir):
     try:
         with open(csv_dir, "r", newline="") as f:
             reader = csv.DictReader(f)
-            headers = next(reader)
-            print("{:<15} {:<10} {:<20}".format(headers[0], headers[1], headers[2]))
+
+            print(
+                "+--------------+----------------+---------------------------+----------------------+------------------+----------------+"
+            )
+            print(
+                "| Inspection ID | Equipment Code | Facility                  | Technician           | Inspection Score | Status         |"
+            )
+            print(
+                "+--------------+----------------+---------------------------+----------------------+------------------+----------------+"
+            )
+
             for row in reader:
-                print("{:<15} {:<10} {:<20}".format(row[0], row[1], row[2]))
+                print(
+                    "| {:<12} | {:<14} | {:<25} | {:<20} | {:<16} | {:<14} |".format(
+                        row["inspection_id"],
+                        row["equipment_code"],
+                        row["facility"],
+                        row["technician"],
+                        row["inspection_score"],
+                        row["status"],
+                    )
+                )
+
+            print(
+                "+--------------+----------------+---------------------------+----------------------+------------------+----------------+"
+            )
+            print()
+            print()
+
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
 
-def find_inspection():
-    return
+def find_inspection(csv_dir, fieldnames):
+    inspection_id = input("Inspection ID: ")
+    print()
+
+    utils.find_inspection_by_id(csv_dir, fieldnames[0], inspection_id)
+    print()
 
 
-def calculate_average_score():
-    return
+def calculate_average_score(csv_dir):
+    try:
+        with open(csv_dir, "r", newline="") as f:
+            reader = csv.DictReader(f)
 
+            scores = []
 
-add_inspection(INSPECTION_TEMPLATE, CSV_FILE, FIELDNAMES)
+            for row in reader:
+                score = int(row["inspection_score"])
+                scores.append(score)
+
+            if scores:
+                average = sum(scores) / len(scores)
+                print(f"Average score: {average:.2f}")
+            else:
+                print("No inspection scores found.")
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+
 
 while True:
     print("====================================================================")
@@ -78,7 +123,31 @@ while True:
     print("2. View All Inspections")
     print("3. Search Inspection")
     print("4. Calculate Average Score")
-    print("5. Inspection Summary")
-    print("6. Exit")
+    print("5. Exit")
     print("--------------------------------------------------------------------")
-    input("Select Option: ")
+    action = input("Select Option: ")
+
+    if action == "1":
+        utils.print_headers(" ADD NEW INSPECTION")
+        # Create + write the new inspection
+        add_inspection(INSPECTION_TEMPLATE, CSV_FILE, FIELDNAMES)
+
+    elif action == "2":
+        utils.print_headers(" VIEW ALL INSPECTIONS")
+        # Fetch and display all as a table
+        load_inspections(CSV_FILE)
+
+    elif action == "3":
+        utils.print_headers(" FIND BY ID")
+
+        find_inspection(CSV_FILE, FIELDNAMES)
+
+    elif action == "4":
+        utils.print_headers(" AVERAGE SCORE")
+
+        calculate_average_score(CSV_FILE)
+
+    elif action == "5":
+        print()
+        print("Goodbye!")
+        break
