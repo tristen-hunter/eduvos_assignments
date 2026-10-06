@@ -1,7 +1,8 @@
 import csv
 from pathlib import Path
 import utils
-
+import inspection_processor
+import records
 
 # --- Global Variables ---
 cwd = Path.cwd()
@@ -85,7 +86,11 @@ def load_inspections(csv_dir):
 
 
 def find_inspection(csv_dir, fieldnames):
-    inspection_id = input("Inspection ID: ")
+    while True:
+        inspection_id = input("Enter Inspection ID      : ")
+        if inspection_processor.validate_inspection_id(inspection_id):
+            break
+        print("Invalid Inspection ID. Format must be INSP001.")
     print()
 
     utils.find_inspection_by_id(csv_dir, fieldnames[0], inspection_id)
@@ -123,7 +128,8 @@ while True:
     print("2. View All Inspections")
     print("3. Search Inspection")
     print("4. Calculate Average Score")
-    print("5. Exit")
+    print("5. Process Inspection Batch")
+    print("6. Exit")
     print("--------------------------------------------------------------------")
     action = input("Select Option: ")
 
@@ -139,15 +145,37 @@ while True:
 
     elif action == "3":
         utils.print_headers(" FIND BY ID")
-
+        # Get ID + search csv
         find_inspection(CSV_FILE, FIELDNAMES)
 
     elif action == "4":
         utils.print_headers(" AVERAGE SCORE")
-
+        # Fecth all scores sum / len
         calculate_average_score(CSV_FILE)
 
     elif action == "5":
+        utils.print_headers(" PROCESS A BATCH")
+        # Fetch batch size + size of the thread pool
+        while True:
+            batch_size = int(input("Batch Size      : "))
+            if int(batch_size) > len(records.records):
+                print(
+                    f"Batch too large, must be equal to or below {len(records.records)}"
+                )
+            break
+        while True:
+            worker_threads = int(input("Worker Threads      : "))
+            if int(worker_threads) > len(records.records):
+                print(
+                    f"Batch too large, must be equal to or below {len(records.records)}"
+                )
+            break
+        inspection_processor.process_batch(records.records, batch_size, worker_threads)
+
+    elif action == "6":
         print()
         print("Goodbye!")
         break
+    else:
+        print("Invalid input, try again")
+        continue
