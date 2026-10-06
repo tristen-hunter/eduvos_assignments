@@ -1,31 +1,56 @@
 import csv
+import inspection_processor
 
 
 def get_inspection_info(inspection_template):
-    inspection_id = input("Enter Inspection ID      : ")
-    inspection_template["inspection_id"] = inspection_id
+    while True:
+        inspection_id = input("Enter Inspection ID      : ")
+        if inspection_processor.validate_inspection_id(inspection_id):
+            inspection_template["inspection_id"] = inspection_id.strip().upper()
+            break
+        print("Invalid Inspection ID. Format must be INSP001.")
 
-    equipment_code = input("Enter Equipment Code     : ")
-    inspection_template["equipment_code"] = equipment_code
+    while True:
+        equipment_code = input("Enter Equipment Code     : ")
+        if inspection_processor.validate_equipment_code(equipment_code):
+            inspection_template["equipment_code"] = equipment_code.strip().upper()
+            break
+        print("Invalid Equipment Code. Format must be EQ-2045.")
 
-    facility = input("Enter Facility Name      : ")
-    inspection_template["facility"] = facility
+    while True:
+        facility = input("Enter Facility Name      : ")
+        if inspection_processor.validate_name(facility):
+            inspection_template["facility"] = facility.strip()
+            break
+        print("Invalid facility name. Please enter a valid name.")
 
-    technician = input("Enter Technician Name    : ")
-    inspection_template["technician"] = technician
+    while True:
+        technician = input("Enter Technician Name    : ")
+        if inspection_processor.validate_name(technician):
+            inspection_template["technician"] = technician.strip()
+            break
+        print("Invalid technician name. Please enter a valid name.")
 
-    inspection_score = input("Enter Inspection Score   : ")
-    inspection_template["inspection_score"] = inspection_score
+    while True:
+        inspection_score = input("Enter Inspection Score   : ")
+        if inspection_processor.validate_score(inspection_score):
+            inspection_template["inspection_score"] = int(inspection_score.strip())
+            break
+        print("Invalid score. Enter a number between 0 and 100.")
 
     print()
-    print("Available Statuses: ")
+    print("Available Statuses:")
     print("1. Operational")
     print("2. Review")
     print("3. Faulty")
 
-    status = input("Select Status            : ")
-    statuses = {"1": "Operational", "2": "Review", "3": "Faulty"}
-    inspection_template["status"] = statuses[status]
+    while True:
+        status = input("Select Status            : ")
+        if inspection_processor.validate_status(status):
+            statuses = {"1": "Operational", "2": "Review", "3": "Faulty"}
+            inspection_template["status"] = statuses[status.strip()]
+            break
+        print("Invalid status. Please select 1, 2, or 3.")
 
     return inspection_template
 
