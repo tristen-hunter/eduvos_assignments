@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<MetroCareInspections>
+  <Inspection>
+    <InspectionID>INSP001</InspectionID>
+    <EquipmentCode>EQ-2045</EquipmentCode>
+    <Facility>Pretoria Central Clinic</Facility>
+    <Score>87</Score>
+    <Status>Operational</Status>
+  </Inspection>
+  <Inspection>
+    <InspectionID>INSP002</InspectionID>
+    <EquipmentCode>EQ-3310</EquipmentCode>
+    <Facility>Soweto Community Clinic</Facility>
+    <Score>54</Score>
+    <Status>Needs Repair</Status>
+  </Inspection>
+  <Inspection>
+    <InspectionID>INSP003</InspectionID>
+    <EquipmentCode>EQ-1180</EquipmentCode>
+    <Facility>Cape Town Day Hospital</Facility>
+    <Score>92</Score>
+    <Status>Operational</Status>
+  </Inspection>
+  <Inspection>
+    <InspectionID>INSP004</InspectionID>
+    <EquipmentCode>EQ-4472</EquipmentCode>
+    <Facility>Durban Metro Clinic</Facility>
+    <Score>41</Score>
+    <Status>Out of Service</Status>
+  </Inspection>
+  <Inspection>
+    <InspectionID>INSP005</InspectionID>
+    <EquipmentCode>EQ-2045</EquipmentCode>
+    <Facility>Johannesburg East Clinic</Facility>
+    <Score>73</Score>
+    <Status>Operational</Status>
+  </Inspection>
+  <Inspection>
+    <InspectionID>INSP006</InspectionID>
+    <EquipmentCode>EQ-5098</EquipmentCode>
+    <Facility>Bloemfontein Health Centre</Facility>
+    <Score>58</Score>
+    <Status>Needs Repair</Status>
+  </Inspection>
+</MetroCareInspections>
