@@ -1,7 +1,8 @@
-import xml.etree.ElementTree as ET
 from pathlib import Path
-import xml_sample_data
+import xml.etree.ElementTree as ET
+
 import utils
+import xml_sample_data
 
 # --- Global Variables ---
 cwd = Path.cwd()
